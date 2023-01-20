@@ -14,10 +14,9 @@ if openTheDoor == true {
 }
 
 // ②タイマーの時間を表示する
-// ③温める時間を設定する
-var timer: Int
+var timer: Int = 0
 timer = 50
-print(timer)
+// ③温める時間を設定する
 
 // ④ボタンを押して温めスタート
 
