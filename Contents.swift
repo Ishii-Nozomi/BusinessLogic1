@@ -59,7 +59,46 @@ private func timerButtonInfo(timerButton: String) {
 timerButtonInfo(timerButton: "1分")
 
 // ⑤ボタンを押して温めスタート
-let startButton = "スタート"
+private func startButtonInfo(startButton: Bool) {
+    if startButton == true {
+        print("温めスタート")
+        
+        // タイマー機能追加
+        PlaygroundPage.current.needsIndefiniteExecution = true
+        class Alarm {
+            var timer: Timer?
+            var count: Int = 0
+            var limit: Int = 60
+            
+            func start() {
+                timer = Timer.scheduledTimer(
+                    timeInterval: 1,
+                    target: self,
+                    selector: #selector(countDown),
+                    userInfo: nil,
+                    repeats: true
+                )
+            }
+            
+            @objc func countDown() {
+                // countの値をインクリメントする
+                limit -= 1
+                print("カウントは\(limit)です")
+                // countの値がlinitの値以上になったif文を実行
+                if limit == count {
+                    print("ピピピピ!(できました)")
+                    // タイマーを止める
+                    timer?.invalidate()
+                }
+            }
+        }
+        let alarm = Alarm()
+        alarm.start()
+    }
+}
+startButtonInfo(startButton: true)
+
+
 
 
 
