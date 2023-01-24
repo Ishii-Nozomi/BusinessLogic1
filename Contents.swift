@@ -2,19 +2,19 @@ import UIKit
 import Foundation
 import PlaygroundSupport
 
-
+var insideTheMicrowave: UIColor = .black
 // ①ドアが開いたら庫内が光る
 func microwave(openTheDoor: Bool) -> Void {
-    var insideTheMicrowave: UIColor = .black
     if openTheDoor == true {
         insideTheMicrowave = .orange
         print("ドアが開いた状態")
     } else if openTheDoor == false {
-        insideTheMicrowave
+        insideTheMicrowave = .black
         print("ドアが閉じた状態")
     }
 }
 microwave(openTheDoor: true)
+microwave(openTheDoor: false)
 
 // ②ワット数を決める
 var wattButton = ["500w", "600w", "1000w"]
@@ -61,6 +61,7 @@ timerButtonInfo(timerButton: "1分")
 // ⑤ボタンを押して温めスタート
 private func startButtonInfo(startButton: Bool) {
     if startButton == true {
+        insideTheMicrowave = .orange
         print("温めスタート")
         
         // タイマー機能追加
@@ -68,7 +69,7 @@ private func startButtonInfo(startButton: Bool) {
         class Alarm {
             var timer: Timer?
             var count: Int = 0
-            var limit: Int = 60
+            var limit: Int = 10
             
             func start() {
                 timer = Timer.scheduledTimer(
@@ -89,6 +90,7 @@ private func startButtonInfo(startButton: Bool) {
                     print("ピピピピ!(できました)")
                     // タイマーを止める
                     timer?.invalidate()
+                    insideTheMicrowave = .black
                 }
             }
         }
