@@ -19,23 +19,28 @@ microwave(openTheDoor: false)
 // ②ワット数を決める
 var wattButton = ["500w", "600w", "1000w"]
 print(wattButton)
-private func wattButtonInfo(wattButton: String) {
+enum Watt: String, CaseIterable {
+    case low = "500w"
+    case middle = "600w"
+    case high = "1000w"
+}
+private func wattButtonInfo(wattButton: Watt) {
     switch wattButton {
-    case "500w" :
+    case .low :
         print("500wで温める")
-    case "600w" :
+    case .middle :
         print("600wで温める")
-    case "1000w" :
+    case .high :
         print("1000wで温める")
-    default :
-        print("設定できません。")
     }
 }
-wattButtonInfo(wattButton: "500w")
+var wattButtons: [Watt] = [.low, .middle, .high]
+wattButtonInfo(wattButton: .low)
 
 // ③タイマーの時間を表示する
 var timerButton = ["1分", "50秒", "40秒", "30秒", "20秒", "10秒"]
 print(timerButton)
+
 
 // ④温める時間を設定する
 private func timerButtonInfo(timerButton: String) {
@@ -56,49 +61,52 @@ private func timerButtonInfo(timerButton: String) {
         print("設定できません。")
     }
 }
-timerButtonInfo(timerButton: "1分")
+timerButtonInfo(timerButton: "10秒")
 
 // ⑤ボタンを押して温めスタート
-private func startButtonInfo(startButton: Bool) {
+private func startButtonInfo(startButton: Bool, time: Int) {
+    
+    // タイマー機能追加
+    PlaygroundPage.current.needsIndefiniteExecution = true
+    class Alarm {
+        var timer: Timer?
+        var count: Int = 0
+        var limit: Int = 10
+        
+        func start() {
+            timer = Timer.scheduledTimer(
+                timeInterval: 1,
+                target: self,
+                selector: #selector(countDown),
+                userInfo: nil,
+                repeats: true
+            )
+        }
+        
+        @objc func countDown() {
+            // countの値をインクリメントする
+            limit -= 1
+            print("カウントは\(limit)です")
+            // countの値がlinitの値以上になったif文を実行
+            if limit == count {
+                print("ピピピピ!(できました)")
+                // タイマーを止める
+                timer?.invalidate()
+                insideTheMicrowave = .black
+            }
+        }
+    }
+    let alarm = Alarm()
+    alarm.start()
+    
     if startButton == true {
         insideTheMicrowave = .orange
         print("温めスタート")
         
-        // タイマー機能追加
-        PlaygroundPage.current.needsIndefiniteExecution = true
-        class Alarm {
-            var timer: Timer?
-            var count: Int = 0
-            var limit: Int = 10
-            
-            func start() {
-                timer = Timer.scheduledTimer(
-                    timeInterval: 1,
-                    target: self,
-                    selector: #selector(countDown),
-                    userInfo: nil,
-                    repeats: true
-                )
-            }
-            
-            @objc func countDown() {
-                // countの値をインクリメントする
-                limit -= 1
-                print("カウントは\(limit)です")
-                // countの値がlinitの値以上になったif文を実行
-                if limit == count {
-                    print("ピピピピ!(できました)")
-                    // タイマーを止める
-                    timer?.invalidate()
-                    insideTheMicrowave = .black
-                }
-            }
-        }
-        let alarm = Alarm()
-        alarm.start()
+
     }
 }
-startButtonInfo(startButton: true)
+startButtonInfo(startButton: true, time: 10)
 
 
 
