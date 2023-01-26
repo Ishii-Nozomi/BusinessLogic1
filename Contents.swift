@@ -43,25 +43,31 @@ print(timerButton)
 
 
 // ④温める時間を設定する
-private func timerButtonInfo(timerButton: String) {
+enum Limit: Int, CaseIterable {
+    case oneminute = 60
+    case fiftySeconds = 50
+    case fortySeconds = 40
+    case thirtySeconds = 30
+    case twentySeconds = 20
+    case tenSeconds = 10
+}
+private func timerButtonInfo(timerButton: Limit) {
     switch timerButton {
-    case "1分" :
+    case .oneminute :
         print("1分設定")
-    case "50秒":
+    case .fiftySeconds:
         print("50秒設定")
-    case "40秒":
+    case .fortySeconds:
         print("40秒設定")
-    case "30秒":
+    case .thirtySeconds:
         print("30秒設定")
-    case "20秒":
+    case .twentySeconds:
         print("20秒設定")
-    case "10秒":
+    case .tenSeconds:
         print("10秒設定")
-    default:
-        print("設定できません。")
     }
 }
-timerButtonInfo(timerButton: "10秒")
+timerButtonInfo(timerButton: .tenSeconds)
 
 // ⑤ボタンを押して温めスタート
 private func startButtonInfo(startButton: Bool, time: Int) {
