@@ -67,42 +67,44 @@ private func timerButtonInfo(timerButton: Limit) {
         print("10秒設定")
     }
 }
-timerButtonInfo(timerButton: .tenSeconds)
+timerButtonInfo(timerButton: .twentySeconds)
+
+class Alarm {
+    var timer: Timer?
+    var count: Int = 0
+    var limit: Int = 0
+    
+    func start() {
+        timer = Timer.scheduledTimer(
+            timeInterval: 1,
+            target: self,
+            selector: #selector(countDown),
+            userInfo: nil,
+            repeats: true
+        )
+    }
+    
+    @objc func countDown() {
+        // countの値をインクリメントする
+        limit -= 1
+        print("カウントは\(limit)です")
+        // countの値がlinitの値以上になったif文を実行
+        if limit == count {
+            print("ピピピピ!(できました)")
+            // タイマーを止める
+            timer?.invalidate()
+            insideTheMicrowave = .black
+        }
+    }
+}
 
 // ⑤ボタンを押して温めスタート
 private func startButtonInfo(startButton: Bool, time: Int) {
     
     // タイマー機能追加
     PlaygroundPage.current.needsIndefiniteExecution = true
-    class Alarm {
-        var timer: Timer?
-        var count: Int = 0
-        var limit: Int = 10
-        
-        func start() {
-            timer = Timer.scheduledTimer(
-                timeInterval: 1,
-                target: self,
-                selector: #selector(countDown),
-                userInfo: nil,
-                repeats: true
-            )
-        }
-        
-        @objc func countDown() {
-            // countの値をインクリメントする
-            limit -= 1
-            print("カウントは\(limit)です")
-            // countの値がlinitの値以上になったif文を実行
-            if limit == count {
-                print("ピピピピ!(できました)")
-                // タイマーを止める
-                timer?.invalidate()
-                insideTheMicrowave = .black
-            }
-        }
-    }
     let alarm = Alarm()
+    alarm.limit = time
     alarm.start()
     
     if startButton == true {
@@ -112,7 +114,7 @@ private func startButtonInfo(startButton: Bool, time: Int) {
 
     }
 }
-startButtonInfo(startButton: true, time: 10)
+startButtonInfo(startButton: true, time: 20)
 
 
 
